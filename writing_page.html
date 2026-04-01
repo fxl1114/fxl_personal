@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>古韵码字</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="rain-container" id="rainContainer"></div>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">古韵码字</h1>
+            <div class="toolbar">
+                <button class="tool-btn" id="clearBtn" title="清空笔墨">清空笔墨</button>
+                <button class="tool-btn" id="clearModeBtn" title="切换清空模式">🔒</button>
+                <button class="tool-btn" id="saveBtn" title="保存文稿">保存文稿</button>
+                <button class="tool-btn" id="exportBtn" title="导出PDF/TXT">导出</button>
+                <button class="tool-btn" id="fontBtn" title="字体设置">字体</button>
+                <button class="tool-btn" id="themeBtn" title="切换主题">切换主题</button>
+                <button class="tool-btn" id="musicBtn" title="背景音乐">🎵</button>
+                <button class="tool-btn" id="switchMusicBtn" title="切换音乐">🎶</button>
+                <span class="word-count">字数：<span id="charCount">0</span></span>
+            </div>
+        </div>
+        
+        <div class="paper-container">
+            <div class="paper">
+                <div class="paper-content" id="editor" contenteditable="true" 
+                     placeholder="提笔书写，墨香四溢...">
+                    <p>静坐书斋，笔墨相宜。</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div class="inkwell">
+                <div class="inkwell-content">
+                    <div class="ink-drop"></div>
+                </div>
+            </div>
+            <div class="brush-stroke">
+                <span>一横一竖皆是情，一撇一捺总关情</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="floating-quote" id="floatingQuote">
+        <span id="quoteText"></span>
+    </div>
+    
+    <audio id="bgMusic" loop>
+        <source src="music/可惜没有如果.mp3" type="audio/mpeg">
+        您的浏览器不支持音频播放
+    </audio>
+    
+    <div class="fading-text-container" id="fadingContainer"></div>
+    
+    <div class="music-wave" id="musicWave">
+        <div class="music-wave-bar"></div>
+        <div class="music-wave-bar"></div>
+        <div class="music-wave-bar"></div>
+        <div class="music-wave-bar"></div>
+        <div class="music-wave-bar"></div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

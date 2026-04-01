@@ -1,0 +1,531 @@
+/* 古风码字页面样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: '楷体', 'KaiTi', 'Microsoft YaHei', sans-serif;
+    background: linear-gradient(135deg, #f5f3f0 0%, #e8e2d5 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* 雨滴背景效果 */
+.rain-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.raindrop {
+    position: absolute;
+    width: 2px;
+    height: 20px;
+    background: linear-gradient(to bottom, transparent, rgba(139, 69, 19, 0.3), transparent);
+    border-radius: 50px;
+    animation: rainFall linear infinite;
+    opacity: 0.7;
+}
+
+@keyframes rainFall {
+    0% {
+        transform: translateY(-100px) rotate(10deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.7;
+    }
+    90% {
+        opacity: 0.7;
+    }
+    100% {
+        transform: translateY(calc(100vh + 100px)) rotate(10deg);
+        opacity: 0;
+    }
+}
+
+/* 背景装饰 */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text x="10" y="30" font-size="8" opacity="0.1">静</text><text x="60" y="50" font-size="6" opacity="0.1">心</text><text x="30" y="70" font-size="7" opacity="0.1">书</text><text x="80" y="80" font-size="5" opacity="0.1">韵</text></svg>') repeat;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.container {
+    width: 90%;
+    max-width: 800px;
+    z-index: 2;
+    position: relative;
+}
+
+/* 头部样式 */
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.title {
+    font-size: 2.5em;
+    color: #2c1810;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    position: relative;
+    display: inline-block;
+}
+
+.title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #8b4513, transparent);
+}
+
+/* 工具栏样式 */
+.toolbar {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.tool-btn {
+    padding: 10px 20px;
+    border: 2px solid #8b4513;
+    background: linear-gradient(145deg, #faf8f5, #f5f0e8);
+    color: #2c1810;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+    font-size: 14px;
+    box-shadow: 0 4px 8px rgba(139, 69, 19, 0.2);
+}
+
+.tool-btn:hover {
+    background: linear-gradient(145deg, #f5f0e8, #e8dfd5);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(139, 69, 19, 0.3);
+}
+
+.tool-btn:active {
+    transform: translateY(0);
+}
+
+.word-count {
+    color: #8b4513;
+    font-weight: bold;
+    padding: 10px 15px;
+    border: 1px solid #d4c5b9;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* 纸张容器样式 */
+.paper-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.paper {
+    width: 100%;
+    max-width: 700px;
+    min-height: 500px;
+    background: #fefdfc;
+    border: 2px solid #d4c5b9;
+    border-radius: 10px;
+    box-shadow: 
+        0 10px 30px rgba(0,0,0,0.1),
+        inset 0 0 0 1px rgba(212, 197, 185, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+/* 纸张纹理 */
+.paper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 29px,
+            rgba(212, 197, 185, 0.1) 29px,
+            rgba(212, 197, 185, 0.1) 30px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 29px,
+            rgba(212, 197, 185, 0.1) 29px,
+            rgba(212, 197, 185, 0.1) 30px
+        );
+    pointer-events: none;
+}
+
+.paper-content {
+    padding: 40px;
+    min-height: 500px;
+    line-height: 2.2;
+    color: #2c1810;
+    font-size: 16px;
+    outline: none;
+    overflow-y: auto;
+    max-height: 600px;
+}
+
+.paper-content:focus {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+/* 光标样式 */
+.paper-content:focus {
+    caret-color: #8b4513;
+}
+
+/* 占位符样式 */
+.paper-content:empty::before {
+    content: '提笔书写，墨香四溢...';
+    color: #c4a57b;
+    font-style: italic;
+    pointer-events: none;
+}
+
+.paper-content:focus:empty::before {
+    content: '';
+}
+
+/* 页脚样式 */
+.footer {
+    text-align: center;
+    position: relative;
+}
+
+.inkwell {
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(145deg, #4a4a4a, #2c2c2c);
+    border-radius: 50%;
+    margin: 0 20px;
+    box-shadow: 
+        0 5px 15px rgba(0,0,0,0.3),
+        inset 0 -2px 5px rgba(255,255,255,0.1);
+    position: relative;
+}
+
+.inkwell-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(145deg, #2c1810, #1a0f08);
+    border-radius: 50%;
+    animation: inkShimmer 3s ease-in-out infinite;
+}
+
+.ink-drop {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #2c1810;
+    border-radius: 50%;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: dropFall 2s ease-in-out infinite;
+}
+
+@keyframes inkShimmer {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 1; }
+}
+
+@keyframes dropFall {
+    0% { transform: translateX(-50%) translateY(-10px); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translateX(-50%) translateY(10px); opacity: 0; }
+}
+
+.brush-stroke {
+    color: #8b4513;
+    font-size: 14px;
+    font-style: italic;
+    margin-top: 10px;
+    opacity: 0.8;
+}
+
+/* 浮动诗句 */
+.floating-quote {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(244, 241, 235, 0.95);
+    border: 1px solid #d4c5b9;
+    border-radius: 15px;
+    padding: 15px 20px;
+    max-width: 250px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    z-index: 1000;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.5s ease;
+}
+
+.floating-quote.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.quote-text {
+    color: #2c1810;
+    font-size: 14px;
+    font-style: italic;
+    line-height: 1.6;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+        padding: 0 10px;
+    }
+    
+    .title {
+        font-size: 2em;
+    }
+    
+    .toolbar {
+        gap: 10px;
+    }
+    
+    .tool-btn {
+        padding: 8px 15px;
+        font-size: 12px;
+    }
+    
+    .paper-content {
+        padding: 30px 20px;
+        font-size: 14px;
+    }
+    
+    .floating-quote {
+        top: 10px;
+        right: 10px;
+        max-width: 200px;
+    }
+}
+
+/* 暗色主题 */
+body.dark-theme {
+    background: linear-gradient(135deg, #2c1810 0%, #1a0f08 100%);
+}
+
+body.dark-theme .title,
+body.dark-theme .tool-btn,
+body.dark-theme .word-count,
+body.dark-theme .brush-stroke,
+body.dark-theme .quote-text,
+body.dark-theme .paper-content {
+    color: #f5f0e8;
+}
+
+body.dark-theme .tool-btn {
+    background: linear-gradient(145deg, #3e2817, #2c1810);
+    border-color: #5d4037;
+}
+
+body.dark-theme .paper {
+    background: #1a0f08;
+    border-color: #3e2817;
+}
+
+body.dark-theme .paper::before {
+    background-image: 
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 29px,
+            rgba(93, 64, 55, 0.2) 29px,
+            rgba(93, 64, 55, 0.2) 30px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 29px,
+            rgba(93, 64, 55, 0.2) 29px,
+            rgba(93, 64, 55, 0.2) 30px
+        );
+}
+
+body.dark-theme .inkwell {
+    background: linear-gradient(145deg, #1a0f08, #0d0806);
+}
+
+/* 文字散去动画效果 */
+.fading-text-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+}
+
+.fading-char {
+    position: absolute;
+    color: #8b4513;
+    font-size: 20px;
+    opacity: 1;
+    pointer-events: none;
+    animation: charFade 1.5s ease-out forwards;
+}
+
+@keyframes charFade {
+    0% {
+        opacity: 1;
+        transform: translateY(0) scale(1) rotate(0deg);
+    }
+    50% {
+        opacity: 0.7;
+        transform: translateY(-50px) scale(1.2) rotate(15deg);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-150px) scale(0.5) rotate(-15deg) translateX(100px);
+    }
+}
+
+/* 音乐按钮状态 */
+.tool-btn.music-playing {
+    background: linear-gradient(145deg, #8b4513, #654321);
+    color: white;
+    animation: musicPulse 2s ease-in-out infinite;
+}
+
+@keyframes musicPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* 音乐波形动画 */
+.music-wave {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 30px;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.music-wave.active {
+    opacity: 0.8;
+}
+
+.music-wave-bar {
+    width: 4px;
+    background: linear-gradient(to top, #8b4513, #d4c5b9);
+    border-radius: 2px;
+    animation: wave 0.8s ease-in-out infinite;
+}
+
+.music-wave-bar:nth-child(1) { animation-delay: 0s; height: 15px; }
+.music-wave-bar:nth-child(2) { animation-delay: 0.2s; height: 25px; }
+.music-wave-bar:nth-child(3) { animation-delay: 0.4s; height: 20px; }
+.music-wave-bar:nth-child(4) { animation-delay: 0.6s; height: 30px; }
+.music-wave-bar:nth-child(5) { animation-delay: 0.8s; height: 18px; }
+
+@keyframes wave {
+    0%, 100% { transform: scaleY(1); }
+    50% { transform: scaleY(1.5); }
+}
+
+/* 暗色主题下的音乐波形 */
+body.dark-theme .music-wave-bar {
+    background: linear-gradient(to top, #d4c5b9, #f5f0e8);
+}
+
+/* 墨水散落效果 */
+.ink-particle {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: #2c1810;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: inkSpread 2s ease-out forwards;
+}
+
+@keyframes inkSpread {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(5) translateY(100px);
+    }
+}
+
+/* 纸张燃烧边缘效果（可选） */
+.burn-effect {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.1) 100%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.burn-effect.active {
+    opacity: 1;
+    animation: burnEdge 1s ease-out forwards;
+}
+
+@keyframes burnEdge {
+    0% {
+        opacity: 0;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0.5;
+        transform: scale(1.02);
+    }
+}
