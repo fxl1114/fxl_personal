@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一二&布布 - 3D 粒子爱心动效</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            overflow: hidden;
+            background: linear-gradient(135deg, #ffe6f0 0%, #fff0f5 50%, #ffeef8 100%);
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        #canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        #text-container {
+            position: fixed;
+            left: 8%;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            opacity: 0;
+            animation: textFadeIn 2s ease-out 1s forwards, textFloat 3s ease-in-out infinite;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        @keyframes textFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50%) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(-50%) translateY(0);
+            }
+        }
+        
+        @keyframes textFloat {
+            0%, 100% {
+                transform: translateY(-50%) translateY(0);
+                opacity: 0.9;
+            }
+            50% {
+                transform: translateY(-50%) translateY(-10px);
+                opacity: 1;
+            }
+        }
+        
+        .text {
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 300;
+            background: linear-gradient(135deg, #ff69b4 0%, #ff1493 50%, #ff69b4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.1em;
+            text-shadow: 0 0 30px rgba(255, 105, 180, 0.3);
+            animation: textBreath 4s ease-in-out infinite;
+        }
+        
+        @keyframes textBreath {
+            0%, 100% {
+                filter: brightness(1);
+                transform: scale(1);
+            }
+            50% {
+                filter: brightness(1.1);
+                transform: scale(1.02);
+            }
+        }
+        
+        .images-container {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .image-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .profile-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid rgba(255, 105, 180, 0.3);
+            box-shadow: 0 0 30px rgba(255, 105, 180, 0.4);
+            transition: all 0.5s ease;
+            animation: imageFloat 4s ease-in-out infinite;
+        }
+        
+        .yier-image {
+            animation-delay: 0s;
+        }
+        
+        .bubu-image {
+            animation-delay: 0.5s;
+        }
+        
+        @keyframes imageFloat {
+            0%, 100% {
+                transform: translateY(0);
+                box-shadow: 0 0 30px rgba(255, 105, 180, 0.4);
+            }
+            50% {
+                transform: translateY(-10px);
+                box-shadow: 0 0 40px rgba(255, 105, 180, 0.6);
+            }
+        }
+        
+        .profile-image:hover {
+            transform: scale(1.05);
+            border-color: rgba(255, 105, 180, 0.6);
+            box-shadow: 0 0 50px rgba(255, 105, 180, 0.8);
+        }
+        
+        .image-label {
+            font-size: 1.2rem;
+            font-weight: 300;
+            color: #ff69b4;
+            text-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+            letter-spacing: 0.1em;
+            opacity: 0.9;
+            animation: labelBreath 3s ease-in-out infinite;
+        }
+        
+        @keyframes labelBreath {
+            0%, 100% {
+                opacity: 0.8;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+        }
+        
+        #heart-center-image {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 5;
+            opacity: 0;
+            animation: centerImageFadeIn 3s ease-out 2s forwards, centerImageFloat 5s ease-in-out infinite;
+            pointer-events: none;
+        }
+        
+        .center-image {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 
+                0 0 60px rgba(255, 105, 180, 0.7),
+                0 0 120px rgba(255, 105, 180, 0.4),
+                inset 0 0 30px rgba(255, 255, 255, 0.3);
+            filter: drop-shadow(0 0 20px rgba(255, 105, 180, 0.8));
+            animation: centerImageGlow 4s ease-in-out infinite;
+        }
+        
+        @keyframes centerImageFadeIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+            to {
+                opacity: 0.9;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+        
+        @keyframes centerImageFloat {
+            0%, 100% {
+                transform: translate(-50%, -50%) translateY(0) rotate(0deg);
+            }
+            25% {
+                transform: translate(-50%, -50%) translateY(-8px) rotate(2deg);
+            }
+            50% {
+                transform: translate(-50%, -50%) translateY(0) rotate(0deg);
+            }
+            75% {
+                transform: translate(-50%, -50%) translateY(8px) rotate(-2deg);
+            }
+        }
+        
+        @keyframes centerImageGlow {
+            0%, 100% {
+                box-shadow: 
+                    0 0 60px rgba(255, 105, 180, 0.7),
+                    0 0 120px rgba(255, 105, 180, 0.4),
+                    inset 0 0 30px rgba(255, 255, 255, 0.3);
+                filter: drop-shadow(0 0 20px rgba(255, 105, 180, 0.8));
+            }
+            50% {
+                box-shadow: 
+                    0 0 80px rgba(255, 105, 180, 0.9),
+                    0 0 150px rgba(255, 105, 180, 0.6),
+                    inset 0 0 40px rgba(255, 255, 255, 0.5);
+                filter: drop-shadow(0 0 30px rgba(255, 105, 180, 1));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            #text-container {
+                left: 5%;
+            }
+            .text {
+                font-size: clamp(1.5rem, 4vw, 2.5rem);
+            }
+            .images-container {
+                gap: 20px;
+            }
+            .profile-image {
+                width: 100px;
+                height: 100px;
+            }
+            .center-image {
+                width: 140px;
+                height: 140px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="text-container">
+        <div class="images-container">
+            <div class="image-wrapper">
+                <img src="yier.jpg" alt="一二" class="profile-image yier-image">
+                <div class="image-label">一二</div>
+            </div>
+            <div class="image-wrapper">
+                <img src="bubu.jpg" alt="布布" class="profile-image bubu-image">
+                <div class="image-label">布布</div>
+            </div>
+        </div>
+        <div class="text">一二&布布</div>
+    </div>
+    
+    <div id="heart-center-image">
+        <img src="image.png" alt="爱心中央" class="center-image">
+    </div>
+    
+    <canvas id="canvas"></canvas>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // 3D 粒子爱心动效
+        class LoveHeartAnimation {
+            constructor() {
+                this.canvas = document.getElementById('canvas');
+                this.scene = null;
+                this.camera = null;
+                this.renderer = null;
+                this.particles = null;
+                this.particleCount = 8000;
+                this.heartPositions = [];
+                this.mouseX = 0;
+                this.mouseY = 0;
+                this.targetRotationY = 0;
+                this.time = 0;
+                this.beatPhase = 0;
+                
+                this.init();
+                this.createHeartShape();
+                this.createParticles();
+                this.animate();
+                this.addEventListeners();
+            }
+            
+            init() {
+                // 创建场景
+                this.scene = new THREE.Scene();
+                
+                // 创建相机
+                this.camera = new THREE.PerspectiveCamera(
+                    75,
+                    window.innerWidth / window.innerHeight,
+                    0.1,
+                    1000
+                );
+                this.camera.position.z = 30;
+                
+                // 创建渲染器
+                this.renderer = new THREE.WebGLRenderer({
+                    canvas: this.canvas,
+                    antialias: true,
+                    alpha: true
+                });
+                this.renderer.setSize(window.innerWidth, window.innerHeight);
+                this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                
+                // 添加环境光
+                const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+                this.scene.add(ambientLight);
+                
+                // 添加点光
+                const pointLight = new THREE.PointLight(0xff69b4, 0.8, 100);
+                pointLight.position.set(10, 10, 20);
+                this.scene.add(pointLight);
+                
+                const pointLight2 = new THREE.PointLight(0xff1493, 0.5, 100);
+                pointLight2.position.set(-10, -10, 15);
+                this.scene.add(pointLight2);
+            }
+            
+            // 3D 爱心方程
+            getHeartPosition(t, u) {
+                const x = 16 * Math.pow(Math.sin(t), 3);
+                const y = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
+                const z = 8 * Math.sin(u) * Math.pow(Math.sin(t), 3);
+                
+                return new THREE.Vector3(x, y, z).multiplyScalar(0.8);
+            }
+            
+            createHeartShape() {
+                this.heartPositions = [];
+                
+                // 生成爱心表面的点
+                for (let i = 0; i < this.particleCount; i++) {
+                    const t = Math.random() * Math.PI * 2;
+                    const u = Math.random() * Math.PI;
+                    
+                    const position = this.getHeartPosition(t, u);
+                    
+                    // 添加一些内部点让爱心更饱满
+                    const scale = 0.3 + Math.random() * 0.7;
+                    position.multiplyScalar(scale);
+                    
+                    this.heartPositions.push(position);
+                }
+            }
+            
+            createParticles() {
+                const geometry = new THREE.BufferGeometry();
+                const positions = new Float32Array(this.particleCount * 3);
+                const colors = new Float32Array(this.particleCount * 3);
+                const sizes = new Float32Array(this.particleCount);
+                const opacities = new Float32Array(this.particleCount);
+                
+                // 颜色调色板
+                const colorsPalette = [
+                    new THREE.Color(0xffb6c1), // 浅粉
+                    new THREE.Color(0xff69b4), // 热粉
+                    new THREE.Color(0xff1493), // 深粉
+                    new THREE.Color(0xffc0cb), // 粉红
+                    new THREE.Color(0xffffff)  // 白色
+                ];
+                
+                for (let i = 0; i < this.particleCount; i++) {
+                    const i3 = i * 3;
+                    
+                    // 初始位置（从四周汇聚）
+                    const angle = Math.random() * Math.PI * 2;
+                    const radius = 50 + Math.random() * 50;
+                    positions[i3] = Math.cos(angle) * radius;
+                    positions[i3 + 1] = Math.sin(angle) * radius;
+                    positions[i3 + 2] = (Math.random() - 0.5) * 50;
+                    
+                    // 目标位置
+                    const targetPos = this.heartPositions[i];
+                    positions[i3] = targetPos.x;
+                    positions[i3 + 1] = targetPos.y;
+                    positions[i3 + 2] = targetPos.z;
+                    
+                    // 随机颜色
+                    const color = colorsPalette[Math.floor(Math.random() * colorsPalette.length)];
+                    colors[i3] = color.r;
+                    colors[i3 + 1] = color.g;
+                    colors[i3 + 2] = color.b;
+                    
+                    // 随机大小
+                    sizes[i] = 0.1 + Math.random() * 0.3;
+                    
+                    // 随机透明度
+                    opacities[i] = 0.3 + Math.random() * 0.7;
+                }
+                
+                geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+                geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+                geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+                geometry.setAttribute('opacity', new THREE.BufferAttribute(opacities, 1));
+                
+                // 创建粒子材质
+                const material = new THREE.PointsMaterial({
+                    size: 0.5,
+                    vertexColors: true,
+                    transparent: true,
+                    opacity: 0.8,
+                    blending: THREE.AdditiveBlending,
+                    depthWrite: false,
+                    sizeAttenuation: true
+                });
+                
+                this.particles = new THREE.Points(geometry, material);
+                this.scene.add(this.particles);
+            }
+            
+            addEventListeners() {
+                // 鼠标移动交互
+                document.addEventListener('mousemove', (event) => {
+                    this.mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+                    this.mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+                });
+                
+                // 窗口大小调整
+                window.addEventListener('resize', () => {
+                    this.camera.aspect = window.innerWidth / window.innerHeight;
+                    this.camera.updateProjectionMatrix();
+                    this.renderer.setSize(window.innerWidth, window.innerHeight);
+                });
+            }
+            
+            animate() {
+                requestAnimationFrame(this.animate.bind(this));
+                
+                this.time += 0.016;
+                this.beatPhase += 0.008;
+                
+                // 心跳脉动效果
+                const beat = Math.sin(this.beatPhase * 2) * 0.05 + 1;
+                
+                // 轻柔自转
+                this.targetRotationY = this.mouseX * 0.3;
+                this.particles.rotation.y += 0.002 + (this.targetRotationY - this.particles.rotation.y) * 0.05;
+                
+                // 轻微倾斜
+                this.particles.rotation.x = this.mouseY * 0.1 + Math.sin(this.time * 0.5) * 0.05;
+                
+                // 更新粒子
+                const positions = this.particles.geometry.attributes.position.array;
+                const sizes = this.particles.geometry.attributes.size.array;
+                
+                for (let i = 0; i < this.particleCount; i++) {
+                    const i3 = i * 3;
+                    
+                    // 粒子漂浮扰动
+                    const floatX = Math.sin(this.time + i) * 0.02;
+                    const floatY = Math.cos(this.time + i * 0.7) * 0.02;
+                    const floatZ = Math.sin(this.time + i * 0.5) * 0.02;
+                    
+                    positions[i3] += floatX;
+                    positions[i3 + 1] += floatY;
+                    positions[i3 + 2] += floatZ;
+                    
+                    // 心跳缩放
+                    positions[i3] *= beat;
+                    positions[i3 + 1] *= beat;
+                    positions[i3 + 2] *= beat;
+                }
+                
+                this.particles.geometry.attributes.position.needsUpdate = true;
+                
+                // 呼吸式明暗发光
+                const glowIntensity = 0.8 + Math.sin(this.time * 2) * 0.2;
+                this.particles.material.opacity = glowIntensity;
+                
+                // 粒子大小呼吸
+                const baseSize = 0.3 + Math.sin(this.time * 1.5) * 0.1;
+                this.particles.material.size = baseSize;
+                
+                // 柔光效果（通过多层渲染模拟）
+                this.renderer.setClearColor(0x000000, 0);
+                this.renderer.render(this.scene, this.camera);
+            }
+        }
+        
+        // 启动动画
+        window.addEventListener('load', () => {
+            new LoveHeartAnimation();
+        });
+    </script>
+</body>
+</html>

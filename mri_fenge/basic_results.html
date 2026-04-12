@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基础区域生长算法结果</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            border-bottom: 3px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        .section {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        .metric {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px;
+            background-color: #e8f5e9;
+            border-radius: 5px;
+            min-width: 150px;
+        }
+        .metric-label {
+            font-weight: bold;
+            color: #2e7d32;
+        }
+        .metric-value {
+            font-size: 1.2em;
+            color: #1b5e20;
+        }
+        .images {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        .image-container {
+            text-align: center;
+            margin: 10px;
+        }
+        .image-container img {
+            max-width: 300px;
+            max-height: 300px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+        }
+        .image-container p {
+            margin-top: 5px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>基础区域生长算法性能报告</h1>
+
+        <div class="section">
+            <h2>算法运行信息</h2>
+            <p><strong>算法名称：</strong>基础区域生长算法</p>
+            <p><strong>阈值：</strong>20</p>
+            <p><strong>种子点：</strong>(255, 111)、(270, 127)、(285, 119)（最终生效：(285, 119)）</p>
+            <p><strong>运行时间：</strong>0.0030 秒</p>
+        </div>
+
+        <div class="section">
+            <h2>性能评估指标</h2>
+            <div class="metric">
+                <div class="metric-label">Dice相似系数</div>
+                <div class="metric-value">0.4099</div>
+            </div>
+            <div class="metric">
+                <div class="metric-label">交并比(IoU)</div>
+                <div class="metric-value">0.2578</div>
+            </div>
+            <div class="metric">
+                <div class="metric-label">精确率</div>
+                <div class="metric-value">1.0000</div>
+            </div>
+            <div class="metric">
+                <div class="metric-label">召回率</div>
+                <div class="metric-value">0.2578</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>结果图片</h2>
+            <div class="images">
+                <div class="image-container">
+                    <img src="basic_result.png" alt="基础算法分割结果">
+                    <p>基础算法分割结果</p>
+                </div>
+                <div class="image-container">
+                    <img src="photo.jpg" alt="原始图像">
+                    <p>原始图像</p>
+                </div>
+                <div class="image-container">
+                    <img src="label.jpg" alt="标签图像">
+                    <p>标签图像</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>分析总结</h2>
+            <p><strong>性能分析：</strong></p>
+            <ul>
+                <li>算法运行速度极快（0.0030 秒），推理效率极高</li>
+                <li>精确率达到 1.0000，说明分割出的区域全部为真实病灶</li>
+                <li>Dice、IoU、召回率偏低，说明病灶区域未完全分割，漏检较多</li>
+                <li>原因：单一种子点 + 固定阈值，无法覆盖完整病灶区域</li>
+            </ul>
+            <p><strong>改进建议：</strong></p>
+            <ul>
+                <li>使用多种子点同时生长</li>
+                <li>加入自适应阈值优化</li>
+                <li>增加区域过滤与后处理</li>
+                <li>使用最终优化版区域生长算法提升分割效果</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -n \"^import\\\\|^from\" *.py)",
+      "Bash(find mri_fenge:*)",
+      "Bash(.venv\\\\\\\\Scripts\\\\\\\\activate)",
+      "Bash(pip install:*)",
+      "Bash(.venv/Scripts/python.exe:*)",
+      "Bash(../../.venv/Scripts/python.exe basic_region_growth.py)",
+      "Bash(python:*)"
+    ]
+  }
+}
